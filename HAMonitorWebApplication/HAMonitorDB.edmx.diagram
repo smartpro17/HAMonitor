@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a8d98665d6424f10830cd4604d7f5830" Name="Diagram1" ZoomLevel="84">
+        <EntityTypeShape EntityType="HAMonitorModel.alert" Width="1.5" PointX="5.25" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HAMonitorModel.checker" Width="1.5" PointX="2.875" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HAMonitorModel.exec_tasks" Width="1.5" PointX="3.25" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="HAMonitorModel.hardware" Width="1.5" PointX="7.75" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HAMonitorModel.task_type" Width="1.5" PointX="7.625" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="HAMonitorModel.task" Width="1.5" PointX="5.25" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HAMonitorModel.tasks_history" Width="1.5" PointX="0.625" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="HAMonitorModel.user" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
+        <AssociationConnector Association="HAMonitorModel.checkertask" />
+        <AssociationConnector Association="HAMonitorModel.taskhardware" />
+        <AssociationConnector Association="HAMonitorModel.checkerexec_tasks" />
+        <AssociationConnector Association="HAMonitorModel.tasks_historyexec_tasks" />
+        <AssociationConnector Association="HAMonitorModel.exec_tasksalert" />
+        <AssociationConnector Association="HAMonitorModel.tasktask_type" />
+        <AssociationConnector Association="HAMonitorModel.userchecker" />
+        <EntityTypeShape EntityType="HAMonitorModel.alert_history" Width="1.5" PointX="8.5" PointY="6" />
+        <AssociationConnector Association="HAMonitorModel.alert_historyalert" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

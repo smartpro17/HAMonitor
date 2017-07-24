@@ -1,0 +1,426 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="HAMonitorModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'HAMonitor.dbo.alert_history' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="alert_history">
+          <Property Name="id_histo_alert" Type="nchar" MaxLength="10" />
+          <Property Name="result_alert" Type="int" />
+          <Property Name="begin_date_alert" Type="datetime" />
+          <Property Name="end_date_alert" Type="datetime" />
+        </EntityType>-->
+        <EntityType Name="alerts">
+          <Key>
+            <PropertyRef Name="id_alert" />
+          </Key>
+          <Property Name="id_alert" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="type" Type="nchar" MaxLength="10" />
+          <Property Name="begin_datetime" Type="datetime" />
+          <Property Name="end_datetime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="checker">
+          <Key>
+            <PropertyRef Name="id_checker" />
+          </Key>
+          <Property Name="id_checker" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="exec_tasks">
+          <Key>
+            <PropertyRef Name="id_exe_task" />
+          </Key>
+          <Property Name="id_exe_task" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="id_check" Type="nchar" MaxLength="10" />
+          <Property Name="id_task" Type="nchar" MaxLength="10" />
+          <Property Name="exe_order" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="hardware">
+          <Key>
+            <PropertyRef Name="id_hard" />
+          </Key>
+          <Property Name="id_hard" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="categories" Type="nchar" MaxLength="10" />
+          <Property Name="description" Type="nchar" MaxLength="10" />
+          <Property Name="ip_adress" Type="nchar" MaxLength="10" />
+          <Property Name="mac_adress" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="task_type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="param" Type="nchar" MaxLength="10" />
+          <Property Name="path" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="tasks">
+          <Key>
+            <PropertyRef Name="id_task" />
+          </Key>
+          <Property Name="id_task" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="id_type" Type="nchar" MaxLength="10" />
+          <Property Name="id_hardware" Type="nchar" MaxLength="10" />
+          <Property Name="description" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="tasks_history">
+          <Key>
+            <PropertyRef Name="id_histo_task" />
+          </Key>
+          <Property Name="id_histo_task" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="result_task" Type="int" />
+          <Property Name="begin_date_task" Type="datetime" />
+          <Property Name="end_date_task" Type="datetime" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="id_user" />
+          </Key>
+          <Property Name="id_user" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="role" Type="nchar" MaxLength="10" />
+          <Property Name="login" Type="nchar" MaxLength="10" />
+          <Property Name="pwd" Type="nchar" MaxLength="10" />
+          <Property Name="phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityContainer Name="HAMonitorModelStoreContainer">
+          <EntitySet Name="alerts" EntityType="Self.alerts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="checker" EntityType="Self.checker" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="exec_tasks" EntityType="Self.exec_tasks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="hardware" EntityType="Self.hardware" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="task_type" EntityType="Self.task_type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tasks" EntityType="Self.tasks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tasks_history" EntityType="Self.tasks_history" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HAMonitorModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="alert">
+          <Key>
+            <PropertyRef Name="id_alert" />
+          </Key>
+          <Property Name="id_alert" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="type" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="begin_datetime" Type="DateTime" Precision="3" />
+          <Property Name="end_datetime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="exec_tasks" Relationship="HAMonitorModel.exec_tasksalert" FromRole="alert" ToRole="exec_tasks" />
+          <NavigationProperty Name="alert_history" Relationship="HAMonitorModel.alert_historyalert" FromRole="alert" ToRole="alert_history" />
+          <Property Name="alert_history_id_histo_alert" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="checker">
+          <Key>
+            <PropertyRef Name="id_checker" />
+          </Key>
+          <Property Name="id_checker" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tasks" Relationship="HAMonitorModel.checkertask" FromRole="checker" ToRole="task" />
+          <NavigationProperty Name="exec_tasks" Relationship="HAMonitorModel.checkerexec_tasks" FromRole="checker" ToRole="exec_tasks" />
+          <NavigationProperty Name="user" Relationship="HAMonitorModel.userchecker" FromRole="checker" ToRole="user" />
+          <Property Name="user_id_user" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="exec_tasks">
+          <Key>
+            <PropertyRef Name="id_exe_task" />
+          </Key>
+          <Property Name="id_exe_task" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="id_check" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="id_task" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="exe_order" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="checker" Relationship="HAMonitorModel.checkerexec_tasks" FromRole="exec_tasks" ToRole="checker" />
+          <Property Name="checker_id_checker" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="tasks_history" Relationship="HAMonitorModel.tasks_historyexec_tasks" FromRole="exec_tasks" ToRole="tasks_history" />
+          <Property Name="tasks_history_id_histo_task" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="alert" Relationship="HAMonitorModel.exec_tasksalert" FromRole="exec_tasks" ToRole="alert" />
+        </EntityType>
+        <EntityType Name="hardware">
+          <Key>
+            <PropertyRef Name="id_hard" />
+          </Key>
+          <Property Name="id_hard" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="categories" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ip_adress" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="mac_adress" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="tasks" Relationship="HAMonitorModel.taskhardware" FromRole="hardware" ToRole="task" />
+        </EntityType>
+        <EntityType Name="task_type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="param" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="task" Relationship="HAMonitorModel.tasktask_type" FromRole="task_type" ToRole="task" />
+        </EntityType>
+        <EntityType Name="task">
+          <Key>
+            <PropertyRef Name="id_task" />
+          </Key>
+          <Property Name="id_task" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="id_type" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="id_hardware" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="checker" Relationship="HAMonitorModel.checkertask" FromRole="task" ToRole="checker" />
+          <Property Name="checker_id_checker" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="hardwares" Relationship="HAMonitorModel.taskhardware" FromRole="task" ToRole="hardware" />
+          <NavigationProperty Name="task_type" Relationship="HAMonitorModel.tasktask_type" FromRole="task" ToRole="task_type" />
+        </EntityType>
+        <EntityType Name="tasks_history">
+          <Key>
+            <PropertyRef Name="id_histo_task" />
+          </Key>
+          <Property Name="id_histo_task" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="result_task" Type="Int32" />
+          <Property Name="begin_date_task" Type="DateTime" Precision="3" />
+          <Property Name="end_date_task" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="exec_tasks" Relationship="HAMonitorModel.tasks_historyexec_tasks" FromRole="tasks_history" ToRole="exec_tasks" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id_user" />
+          </Key>
+          <Property Name="id_user" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="role" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="login" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="pwd" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="checkers" Relationship="HAMonitorModel.userchecker" FromRole="user" ToRole="checker" />
+        </EntityType>
+        <EntityContainer Name="HAMonitorEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="alerts" EntityType="Self.alert" />
+          <EntitySet Name="checkers" EntityType="Self.checker" />
+          <EntitySet Name="exec_tasks" EntityType="Self.exec_tasks" />
+          <EntitySet Name="hardwares" EntityType="Self.hardware" />
+          <EntitySet Name="task_type" EntityType="Self.task_type" />
+          <EntitySet Name="tasks" EntityType="Self.task" />
+          <EntitySet Name="tasks_history" EntityType="Self.tasks_history" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <AssociationSet Name="checkertask" Association="HAMonitorModel.checkertask">
+            <End Role="checker" EntitySet="checkers" />
+            <End Role="task" EntitySet="tasks" />
+          </AssociationSet>
+          <AssociationSet Name="taskhardware" Association="HAMonitorModel.taskhardware">
+            <End Role="task" EntitySet="tasks" />
+            <End Role="hardware" EntitySet="hardwares" />
+          </AssociationSet>
+          <AssociationSet Name="checkerexec_tasks" Association="HAMonitorModel.checkerexec_tasks">
+            <End Role="checker" EntitySet="checkers" />
+            <End Role="exec_tasks" EntitySet="exec_tasks" />
+          </AssociationSet>
+          <AssociationSet Name="tasks_historyexec_tasks" Association="HAMonitorModel.tasks_historyexec_tasks">
+            <End Role="tasks_history" EntitySet="tasks_history" />
+            <End Role="exec_tasks" EntitySet="exec_tasks" />
+          </AssociationSet>
+          <AssociationSet Name="exec_tasksalert" Association="HAMonitorModel.exec_tasksalert">
+            <End Role="exec_tasks" EntitySet="exec_tasks" />
+            <End Role="alert" EntitySet="alerts" />
+          </AssociationSet>
+          <AssociationSet Name="tasktask_type" Association="HAMonitorModel.tasktask_type">
+            <End Role="task" EntitySet="tasks" />
+            <End Role="task_type" EntitySet="task_type" />
+          </AssociationSet>
+          <AssociationSet Name="userchecker" Association="HAMonitorModel.userchecker">
+            <End Role="user" EntitySet="users" />
+            <End Role="checker" EntitySet="checkers" />
+          </AssociationSet>
+          <EntitySet Name="alert_history" EntityType="HAMonitorModel.alert_history" />
+          <AssociationSet Name="alert_historyalert" Association="HAMonitorModel.alert_historyalert">
+            <End Role="alert_history" EntitySet="alert_history" />
+            <End Role="alert" EntitySet="alerts" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="checkertask">
+          <End Type="HAMonitorModel.checker" Role="checker" Multiplicity="1" />
+          <End Type="HAMonitorModel.task" Role="task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="checker">
+              <PropertyRef Name="id_checker" />
+            </Principal>
+            <Dependent Role="task">
+              <PropertyRef Name="checker_id_checker" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="taskhardware">
+          <End Type="HAMonitorModel.task" Role="task" Multiplicity="*" />
+          <End Type="HAMonitorModel.hardware" Role="hardware" Multiplicity="*" />
+        </Association>
+        <Association Name="checkerexec_tasks">
+          <End Type="HAMonitorModel.checker" Role="checker" Multiplicity="1" />
+          <End Type="HAMonitorModel.exec_tasks" Role="exec_tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="checker">
+              <PropertyRef Name="id_checker" />
+            </Principal>
+            <Dependent Role="exec_tasks">
+              <PropertyRef Name="checker_id_checker" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tasks_historyexec_tasks">
+          <End Type="HAMonitorModel.tasks_history" Role="tasks_history" Multiplicity="1" />
+          <End Type="HAMonitorModel.exec_tasks" Role="exec_tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tasks_history">
+              <PropertyRef Name="id_histo_task" />
+            </Principal>
+            <Dependent Role="exec_tasks">
+              <PropertyRef Name="tasks_history_id_histo_task" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="exec_tasksalert">
+          <End Type="HAMonitorModel.exec_tasks" Role="exec_tasks" Multiplicity="1" />
+          <End Type="HAMonitorModel.alert" Role="alert" Multiplicity="1" />
+        </Association>
+        <Association Name="tasktask_type">
+          <End Type="HAMonitorModel.task" Role="task" Multiplicity="1" />
+          <End Type="HAMonitorModel.task_type" Role="task_type" Multiplicity="1" />
+        </Association>
+        <Association Name="userchecker">
+          <End Type="HAMonitorModel.user" Role="user" Multiplicity="1" />
+          <End Type="HAMonitorModel.checker" Role="checker" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="checker">
+              <PropertyRef Name="user_id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="alert_history">
+          <Key>
+            <PropertyRef Name="id_histo_alert" />
+          </Key>
+          <Property Name="id_histo_alert" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="id_warning" Type="Int32" />
+          <Property Name="begin_date_task" Type="DateTime" Precision="3" />
+          <Property Name="end_date_task" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="alerts" Relationship="HAMonitorModel.alert_historyalert" FromRole="alert_history" ToRole="alert" />
+        </EntityType>
+        <Association Name="alert_historyalert">
+          <End Type="HAMonitorModel.alert_history" Role="alert_history" Multiplicity="1" />
+          <End Type="HAMonitorModel.alert" Role="alert" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="alert_history">
+              <PropertyRef Name="id_histo_alert" />
+            </Principal>
+            <Dependent Role="alert">
+              <PropertyRef Name="alert_history_id_histo_alert" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HAMonitorModelStoreContainer" CdmEntityContainer="HAMonitorEntities">
+          <EntitySetMapping Name="alerts">
+            <EntityTypeMapping TypeName="HAMonitorModel.alert">
+              <MappingFragment StoreEntitySet="alerts">
+                <ScalarProperty Name="id_alert" ColumnName="id_alert" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="begin_datetime" ColumnName="begin_datetime" />
+                <ScalarProperty Name="end_datetime" ColumnName="end_datetime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="checkers">
+            <EntityTypeMapping TypeName="HAMonitorModel.checker">
+              <MappingFragment StoreEntitySet="checker">
+                <ScalarProperty Name="id_checker" ColumnName="id_checker" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="exec_tasks">
+            <EntityTypeMapping TypeName="HAMonitorModel.exec_tasks">
+              <MappingFragment StoreEntitySet="exec_tasks">
+                <ScalarProperty Name="id_exe_task" ColumnName="id_exe_task" />
+                <ScalarProperty Name="id_check" ColumnName="id_check" />
+                <ScalarProperty Name="id_task" ColumnName="id_task" />
+                <ScalarProperty Name="exe_order" ColumnName="exe_order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="hardwares">
+            <EntityTypeMapping TypeName="HAMonitorModel.hardware">
+              <MappingFragment StoreEntitySet="hardware">
+                <ScalarProperty Name="id_hard" ColumnName="id_hard" />
+                <ScalarProperty Name="categories" ColumnName="categories" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="ip_adress" ColumnName="ip_adress" />
+                <ScalarProperty Name="mac_adress" ColumnName="mac_adress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="task_type">
+            <EntityTypeMapping TypeName="HAMonitorModel.task_type">
+              <MappingFragment StoreEntitySet="task_type">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="param" ColumnName="param" />
+                <ScalarProperty Name="path" ColumnName="path" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tasks">
+            <EntityTypeMapping TypeName="HAMonitorModel.task">
+              <MappingFragment StoreEntitySet="tasks">
+                <ScalarProperty Name="id_task" ColumnName="id_task" />
+                <ScalarProperty Name="id_type" ColumnName="id_type" />
+                <ScalarProperty Name="id_hardware" ColumnName="id_hardware" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tasks_history">
+            <EntityTypeMapping TypeName="HAMonitorModel.tasks_history">
+              <MappingFragment StoreEntitySet="tasks_history">
+                <ScalarProperty Name="id_histo_task" ColumnName="id_histo_task" />
+                <ScalarProperty Name="result_task" ColumnName="result_task" />
+                <ScalarProperty Name="begin_date_task" ColumnName="begin_date_task" />
+                <ScalarProperty Name="end_date_task" ColumnName="end_date_task" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="HAMonitorModel.user">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="role" ColumnName="role" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="pwd" ColumnName="pwd" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
